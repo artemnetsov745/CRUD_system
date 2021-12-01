@@ -1,0 +1,24 @@
+{% extends 'base_template.html' %}
+
+{% load static %}
+
+{% block content %}
+    {% if people %}
+        {% for person in people %}
+            <div class="person-section">
+                <div class="avatar">
+                    {% if person.photo %}
+                        <img src="{{person.photo.url}}">
+                    {% else %}
+                        <img src="{% static 'person_manager/images/default-avatar.png' %}">
+                    {% endif %}
+                </div>
+                <div class="person-info">
+                    <a href="{{person.get_absolute_url}}">{{person.first_name}} {{person.last_name}}</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+
+    {% endif %}
+{% endblock %}

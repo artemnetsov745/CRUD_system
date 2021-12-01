@@ -1,0 +1,26 @@
+[
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "student"
+        }
+    },
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "employee"
+        }
+    },
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "teacher"
+        }
+    },
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "administrative staff"
+        }
+    }
+]

@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="{% static 'person_manager/css/styles.css' %}">
+    <title></title>
+</head>
+<body>
+    <div class="left-sidebar">
+        <ul>
+            <li><a href="{% url 'all_people' %}">All People</a></li>
+            <li><a href="{% url 'create_person' %}">Add Person</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+
+        {% block pagination %}
+        {% if is_paginated %}
+            <div class="pagination">
+                <span class="links">
+                    {% if page_obj.has_previous %}
+                        <a href="{{request.path}}?page={{page_obj.previous_page_number}}">Previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="{{request.path}}?page={{page_obj.next_page_number}}">Next</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
+    {% endblock %}
+    </div>
+</body>
+</html>

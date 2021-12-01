@@ -1,0 +1,83 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Person info:</h3>
+        {{person_form.as_p}}
+        <h3>Passport info:</h3>
+        {{passport_form.as_p}}
+        <h3>Phone Number(s):</h3>
+        {{phone_number_formset.management_form}}
+        {{phone_number_formset.non_form_errors}}
+        <div id="phone-number-list">
+            {% for form in phone_number_formset %}
+                {% if not form.to_delete.value == None %}
+                    <div class="phone-number-form">
+                        {{form.non_field_errors}}
+                        {% for field in form %}
+                            {{field}}
+                        {% endfor %}
+                        <button class="delete-form-btn" type="button">Delete</button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div id="empty-form" class="hidden">
+            {{phone_number_formset.empty_form.non_field_errors}}
+            {% for field in phone_number_formset.empty_form %}
+                {{field}}
+            {% endfor %}
+            <button class="delete-form-btn" type="button">Delete</button>
+        </div>
+        <hr>
+        <div><button id="create-form-btn" type="button">Add more</button></div>
+        <hr>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <script>
+        const totalNewForms = document.getElementById('id_form-TOTAL_FORMS');
+        
+        const createFormBtn = document.getElementById('create-form-btn');
+        createFormBtn.addEventListener('click', createNewForm);
+        function createNewForm(event) {
+            const countForms = document.getElementsByClassName('phone-number-form').length;
+
+            const emptyFormEl = document.getElementById('empty-form').cloneNode(true);
+            emptyFormEl.setAttribute('class', 'phone-number-form');
+            emptyFormEl.setAttribute('id', `form-${countForms}`);
+            const regex = new RegExp('__prefix__', 'g');
+            emptyFormEl.innerHTML = emptyFormEl.innerHTML.replace(regex, countForms);
+            emptyFormEl.children[3].addEventListener('click', deleteFormBtn);
+            
+            totalNewForms.setAttribute('value', countForms + 1);
+
+            const formset = document.getElementById('phone-number-list');
+            formset.append(emptyFormEl);
+        }
+
+        function deleteFormBtn(event) {
+            const countForms = document.getElementsByClassName('phone-number-form').length;
+
+            if (countForms > 1) {
+                let targetElement = event.target || event.srcElement;
+                console.log(targetElement)
+                targetElement.parentNode.setAttribute('class', 'hidden');
+                targetElement.parentNode.getElementsByClassName('to-delete-flag')[0].setAttribute('value', 'True');
+            }
+        }
+
+        const deleteFormBtns = document.getElementsByClassName('delete-form-btn');
+        for (let i = 0; i < deleteFormBtns.length; ++i)
+        {
+            deleteFormBtns[i].addEventListener('click', deleteFormBtn);
+        }
+    </script>
+{% endblock %}

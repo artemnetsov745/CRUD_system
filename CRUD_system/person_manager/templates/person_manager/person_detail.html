@@ -1,0 +1,41 @@
+{% extends 'base_template.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="avatar">
+        {% if person.photo %}
+            <img src="{{person.photo.url}}" style="max-height: 50px;">
+        {% else %}
+            <img src="{% static 'person_manager/images/default-avatar.png' %}" style="max-height: 50px;">
+        {% endif %}
+    </div>
+    <p>First name: {{person.first_name}}</p>
+    <p>Last name: {{person.last_name}}</p>
+    {% if person.groups %}
+        <p>Position: {{person.display_groups}}</p>
+    {% endif %}
+    {% if person.middle_name %}
+        <p>Middle name: {{person.middle_name}}</p>
+    {% endif %}
+    <p>Date of birth: {{person.date_of_birth}}</p>
+    <p>Passport: {{person.display_passport_info}}</p>
+    <p>Address: {{person.address}}</p>
+    <p>Email: {{person.email}}</p>
+    <p>
+        Phone(s): <ul>{% for phone in person.phonenumber_set.all %} <li>{{phone}}</li> {% endfor %}</ul>
+    </p>
+    <p>Personnel number: {{person.personnel_number}}</p>
+    {% if person.vk_username %}
+        <p>VK username: {{person.vk_username}}</p>
+    {% endif %}
+    <p>Password: {{person.password}}</p>
+    <p>Login: {{person.login}}</p>
+    <p>Updation date: {{person.date_update}}</p>
+    <p>Creation date: {{person.date_create}}</p>
+
+    <div class="management-links">
+        <a href="{% url 'update_person' person.pk %}">Edit</a>
+        <a href="{% url 'delete_person' person.pk %}">Delete</a>
+    </div>
+{% endblock %}
