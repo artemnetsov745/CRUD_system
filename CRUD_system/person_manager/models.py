@@ -19,7 +19,7 @@ class Person(models.Model):
     personnel_number = models.CharField(max_length=30)
     vk_username = models.CharField(max_length=100, null=True, blank=True, verbose_name='VK Username')
     login = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100) # in hash?
     date_create = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
 
